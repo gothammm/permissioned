@@ -17,8 +17,14 @@ storage.on('ready', () => {
   console.log('Ready..', storage.isActive);
   let acl = new ACL(storage);
   console.log(acl.role('Administrator').add());
-  acl.user('citjyi3ul0000c7gxri95i1uq').details().then(console.log);
+  acl.user('citjyi3ul0000c7gxri95i1uq').details();
+  let user = acl.user(cuid()).add()
+  console.log(user);
   return storage.clean();
+  // Bluebird.all(transactions.map(x => x()).map(x => x.reflect())).then(result => {
+  //   console.log(result[0].reason());
+  //   return storage.clean();
+  // });
   // let add = Bluebird.coroutine(storage.add.bind(storage));
   // let get = Bluebird.coroutine(storage.get.bind(storage));
   // let remove = Bluebird.coroutine(storage.remove.bind(storage));
