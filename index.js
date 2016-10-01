@@ -18,12 +18,23 @@ storage.on('ready', () => {
   let acl = new ACL(storage);
   return Bluebird.coroutine(function* () {
     let role = yield acl.role('Administrator').add();
+    let ccrep = yield acl.role('Ccrep').add();
     let user = acl.user(cuid());
     let savedUser = yield user.add();
-    let updatedUser = yield user.assign(role._id);
+    let updatedUser = yield user.assign(role.name);
+    let updatedUserTwo = yield user.assign(ccrep.name);
     let userComplete = yield user.complete();
-    return storage.clean();
-  })().catch(console.log);
+    console.log(userComplete);
+    let access = yield acl.role('Administrator').allow('Member', { read: true, create: false });
+    let accesstwo = yield acl.role('Ccrep').allow('Member', { read: true, create: true, delete: true });
+
+    let resourceAccess = yield acl.hasAccess(savedUser.user, 'Member', ['create', 'read']);
+    console.log('----------', resourceAccess);
+    return storage.clean({ drop: true });
+  })().catch(err => {
+    console.log(err);
+    console.log(err.stack);
+  });
   // Bluebird.all(transactions.map(x => x()).map(x => x.reflect())).then(result => {
   //   console.log(result[0].reason());
   //   return storage.clean();
