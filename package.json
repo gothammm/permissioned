@@ -4,7 +4,13 @@
   "description": "Access Control Lists made simple.",
   "main": "index.js",
   "scripts": {
-    "test": "ava"
+    "test": "./node_modules/.bin/nyc ./node_modules/.bin/ava --timeout=10s --verbose",
+    "report-html": "./node_modules/.bin/nyc report --reporter=html"
+  },
+  "ava": {
+    "files": [
+      "test/**/*.test.js"
+    ]
   },
   "repository": {
     "type": "git",
