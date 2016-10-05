@@ -105,5 +105,15 @@ test('#add - must throw error for invalid arguments', t => {
   });
 });
 
+test('#add - must throw error for an invalid 2nd parameter', t => {
+  let storage = t.context.storage;
+  let fn = Bluebird.coroutine(storage.add.bind(storage));
+  t.throws(fn(storage.containers.ROLE), (val) => {
+    expect(val).to.have.length(1);
+    expect(val[0]).to.be.instanceof(ACLError);
+    return true;
+  });
+});
+
 
 test.after.always('cleanup', util.cleanup);
