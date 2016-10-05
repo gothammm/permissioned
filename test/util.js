@@ -11,6 +11,6 @@ module.exports = {
       console.log('Dropping collection - ', col);
       return db.dropCollection(col);
     });
-    return Bluebird.all(dropCollection).then(() => true);
+    return Bluebird.all(dropCollection).then(() => db.close());
   }
 };

@@ -69,7 +69,7 @@ test('should return containers type', t => {
   expect(storage.containers.ACCESS).to.be.a('string');
 });
 
-test.cb.only('must clean any active mongo storage', t => {
+test.cb('must clean any active mongo storage', t => {
   let storage = new MongoStorage({
     url: t.context.dbUrl,
     prefix: 'acl'
