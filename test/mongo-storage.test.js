@@ -5,15 +5,17 @@ const chai = require('chai');
 const expect = chai.expect;
 const MongoStorage = require('../lib/mongo-storage');
 const util = require('./util');
+const Bluebird = require('bluebird');
 test.beforeEach(t => {
   t.context.dbUrl = util.dbUrl;
-});
-
-test.cb('should initialize mongo storage', t => {
-  let storage = new MongoStorage({
+  t.context.storage = new MongoStorage({
     url: t.context.dbUrl,
     prefix: 'acl'
   });
+});
+
+test.cb('should initialize mongo storage', t => {
+  let storage = t.context.storage;
   storage.on('ready', () => {
     t.truthy(storage.db);
     t.pass();
@@ -34,10 +36,7 @@ test('should get collection name  based on prefix', t => {
 });
 
 test('should validate db url', t => {
-  let storage = new MongoStorage({
-    url: t.context.dbUrl,
-    prefix: 'acl'
-  });
+  let storage = t.context.storage;
 
   let valid = storage._isValidUrl('mongodb://test:2723/dbName');
   let invalid = storage._isValidUrl('test');
@@ -46,11 +45,7 @@ test('should validate db url', t => {
 });
 
 test.cb('should throw error when trying to initialize an active storage', t => {
-  let storage = new MongoStorage({
-    url: t.context.dbUrl,
-    prefix: 'acl'
-  });
-
+  let storage = t.context.storage;
   storage.on('ready', () => {
     t.throws(storage.init(), ACLError);
     t.end();
@@ -58,11 +53,7 @@ test.cb('should throw error when trying to initialize an active storage', t => {
 });
 
 test('should return containers type', t => {
-  let storage = new MongoStorage({
-    url: t.context.dbUrl,
-    prefix: 'acl'
-  });
-
+  let storage = t.context.storage;
   expect(storage.containers).to.be.an('object');
   expect(storage.containers.ROLE).to.be.a('string');
   expect(storage.containers.USER).to.be.a('string');
@@ -70,17 +61,47 @@ test('should return containers type', t => {
 });
 
 test.cb('must clean any active mongo storage', t => {
-  let storage = new MongoStorage({
-    url: t.context.dbUrl,
-    prefix: 'acl'
-  });
-
+  let storage = t.context.storage;
   storage.on('ready', () => {
     storage.clean();
   });
   storage.on('clean', () => {
     t.pass();
     t.end();
+  });
+});
+
+test('must drop collections with drop: true flag', t => {
+  let storage = t.context.storage;
+  return storage.clean({ drop: true });
+});
+
+test('#_getUrl must return a valid mongo string', t => {
+  let storage = t.context.storage;
+  let connStr = storage._getUrl({
+    username: 'test',
+    password: 'test',
+    host: 'localhost',
+    port: 27017,
+    db: 'testdb'
+  });
+
+  t.true(storage._isValidUrl(connStr));
+});
+
+test('#add - must be a generator function', t => {
+  let storage = t.context.storage;
+  t.is(storage.add.constructor.name, 'GeneratorFunction');
+});
+
+test('#add - must throw error for invalid arguments', t => {
+  let storage = t.context.storage;
+  let fn = Bluebird.coroutine(storage.add.bind(storage));
+  t.throws(fn(), (val) => {
+    if (val && val.length) {
+      val.forEach(x => expect(x).to.be.instanceof(ACLError));
+    }
+    return true;
   });
 });
 
