@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/nyc ./node_modules/.bin/ava --timeout=10s --verbose",
+    "test-dev": "npm test && npm run report-html",
+    "ci-test": "npm run test && npm run lint",
+    "lint": "eslint --config .eslintrc.json .",
     "report-html": "./node_modules/.bin/nyc report --reporter=html"
   },
   "ava": {
@@ -45,6 +48,7 @@
     "ava": "^0.16.0",
     "chai": "^3.5.0",
     "coveralls": "^2.11.14",
+    "eslint": "^3.7.1",
     "nyc": "^8.3.0"
   }
 }

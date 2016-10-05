@@ -1,6 +1,7 @@
 'use strict';
-const chai = require('chai');
 const test = require('ava');
+const ACLError = require('../lib/error');
+const chai = require('chai');
 const expect = chai.expect;
 const MongoStorage = require('../lib/mongo-storage');
 const util = require('./util');
@@ -51,7 +52,34 @@ test.cb('should throw error when trying to initialize an active storage', t => {
   });
 
   storage.on('ready', () => {
-    t.throws(storage.init(), Error);
+    t.throws(storage.init(), ACLError);
+    t.end();
+  });
+});
+
+test('should return containers type', t => {
+  let storage = new MongoStorage({
+    url: t.context.dbUrl,
+    prefix: 'acl'
+  });
+
+  expect(storage.containers).to.be.an('object');
+  expect(storage.containers.ROLE).to.be.a('string');
+  expect(storage.containers.USER).to.be.a('string');
+  expect(storage.containers.ACCESS).to.be.a('string');
+});
+
+test.cb.only('must clean any active mongo storage', t => {
+  let storage = new MongoStorage({
+    url: t.context.dbUrl,
+    prefix: 'acl'
+  });
+
+  storage.on('ready', () => {
+    storage.clean();
+  });
+  storage.on('clean', () => {
+    t.pass();
     t.end();
   });
 });
