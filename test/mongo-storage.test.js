@@ -120,7 +120,7 @@ test('#add - must throw error for an invalid 2nd parameter', t => {
   let fn = Bluebird.coroutine(storage.add.bind(storage));
   t.throws(fn(storage.containers.ROLE), (val) => {
     expect(val).to.have.length(1);
-    expect(val[0]).to.be.instanceof(ACLError);
+    val.forEach(x => expect(x).to.be.instanceof(ACLError));
     return true;
   });
 });
@@ -138,7 +138,15 @@ test('#add - should add a new record', t => {
   });
 });
 
-test.todo('#get - validate arguments');
+test('#get - validate arguments', t => {
+  let storage = t.context.storage;
+  let fn = Bluebird.coroutine(storage.get.bind(storage));
+  t.throws(fn(), (val) => {
+    expect(val).to.have.length(2);
+    val.forEach(x => expect(x).to.be.instanceof(ACLError));
+    return true;
+  });
+});
 
 test('#get - should fetch record by query', t => {
   let storage = t.context.storage;
