@@ -138,6 +138,25 @@ test('#add - should add a new record', t => {
   });
 });
 
+test.todo('#get - validate arguments');
+
+test('#get - should fetch record by query', t => {
+  let storage = t.context.storage;
+  let get = Bluebird.coroutine(storage.get.bind(storage));
+  let add = Bluebird.coroutine(storage.add.bind(storage));
+  return Bluebird.coroutine(function* () {
+    yield storage._ready();
+    let record = yield add(storage.containers.USER, {
+      user: cuid(),
+      roles: [],
+      isBlocked: false,
+      isActive: true 
+    });
+    let dbRecord = yield get(storage.containers.USER, { user: record.user });
+    t.truthy(dbRecord);
+  })().catch(err => t.fail(err));
+});
+
 test.afterEach.always('close active connection', t => {
   t.context.storage.clean();
 });
