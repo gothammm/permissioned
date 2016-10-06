@@ -5,7 +5,9 @@ const chai = require('chai');
 const expect = chai.expect;
 const MongoStorage = require('../lib/mongo-storage');
 const util = require('./util');
+const cuid = require('cuid');
 const Bluebird = require('bluebird');
+
 test.beforeEach(t => {
   t.context.dbUrl = util.dbUrl;
   t.context.storage = new MongoStorage({
@@ -25,6 +27,14 @@ test.cb('should initialize mongo storage', t => {
     t.fail(err);
     t.end();
   });
+});
+
+test('should throw error trying to access inactive db instance', t => {
+  let storage = new MongoStorage({
+    url: t.context.dbUrl,
+    prefix: 'acl'
+  });
+  t.throws(() => storage.db, ACLError);
 });
 
 test('should get collection name  based on prefix', t => {
@@ -115,5 +125,21 @@ test('#add - must throw error for an invalid 2nd parameter', t => {
   });
 });
 
+test('#add - should add a new record', t => {
+  let storage = t.context.storage;
+  let fn = Bluebird.coroutine(storage.add.bind(storage));
+  storage._ready().then(() => {
+    return fn(storage.containers.USER, {
+      user: cuid(),
+      roles: [],
+      isBlocked: false,
+      isActive: true
+    });
+  });
+});
+
+test.afterEach.always('close active connection', t => {
+  t.context.storage.clean();
+});
 
 test.after.always('cleanup', util.cleanup);
