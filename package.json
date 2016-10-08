@@ -1,6 +1,6 @@
 {
   "name": "permissioned",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Access Control Lists made simple.",
   "main": "index.js",
   "scripts": {
