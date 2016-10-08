@@ -5,6 +5,7 @@ const Bluebird = require('bluebird');
 const log = require('../lib/log');
 module.exports = {
   dbUrl,
+  testUrl: 'mongodb://localhost:27017/acl_test_two',
   cleanup: function* () {
     let db = yield client.connect(dbUrl);
     let collections = yield db.collections();

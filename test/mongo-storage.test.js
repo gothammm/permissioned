@@ -10,6 +10,7 @@ const Bluebird = require('bluebird');
 
 test.beforeEach(t => {
   t.context.dbUrl = util.dbUrl;
+  t.context.testUrl = util.testUrl;
   t.context.storage = new MongoStorage({
     url: t.context.dbUrl,
     prefix: 'acl'
@@ -26,6 +27,24 @@ test.cb('should initialize mongo storage', t => {
   storage.on('error', err => {
     t.fail(err);
     t.end();
+  });
+});
+
+test('must drop collections with drop: true flag', t => {
+  let storage = new MongoStorage({
+    url: t.context.testUrl,
+    prefix: 'acl'
+  });;
+  let add = Bluebird.coroutine(storage.add.bind(storage));
+  storage.on('ready', () => {
+    return add(storage.containers.USER, {
+      user: cuid(),
+      roles: [],
+      isBlocked: false,
+      isActive: true
+    }).then(() => {
+      return storage.clean({ drop: true });
+    });
   });
 });
 
@@ -54,6 +73,19 @@ test('should validate db url', t => {
   t.false(invalid);
 });
 
+test.cb('should fail db connection', t => {
+  let storage = new MongoStorage({
+    url: 'mongodb://localhost:2723/dbName',
+    prefix: 'acl'
+  });
+
+  storage.on('error', err => {
+    t.is(err.constructor.name, ACLError.name);
+    t.truthy(err);
+    t.end();
+  });
+});
+
 test.cb('should throw error when trying to initialize an active storage', t => {
   let storage = t.context.storage;
   storage.on('ready', () => {
@@ -79,11 +111,6 @@ test.cb('must clean any active mongo storage', t => {
     t.pass();
     t.end();
   });
-});
-
-test('must drop collections with drop: true flag', t => {
-  let storage = t.context.storage;
-  return storage.clean({ drop: true });
 });
 
 test('#_getUrl must return a valid mongo string', t => {
@@ -158,12 +185,90 @@ test('#get - should fetch record by query', t => {
       user: cuid(),
       roles: [],
       isBlocked: false,
-      isActive: true 
+      isActive: true
     });
     let dbRecord = yield get(storage.containers.USER, { user: record.user });
     t.truthy(dbRecord);
   })().catch(err => t.fail(err));
 });
+
+test('#count - must validate parameters', t => {
+  let storage = t.context.storage;
+  let count = Bluebird.coroutine(storage.count.bind(storage));
+
+  t.throws(count(), (val) => {
+    expect(val).to.have.length(2);
+    val.forEach(x => {
+      t.is(x.constructor.name, ACLError.name);
+    });
+    return true;
+  });
+});
+
+test('#count - should fetch count 0 for a query', t => {
+  let storage = t.context.storage;
+  let count = Bluebird.coroutine(storage.count.bind(storage));
+
+  return Bluebird.coroutine(function* () {
+    yield storage._ready();
+    let totalCount = yield count(storage.containers.ROLE, {});
+    t.is(0, totalCount);
+  })().catch(err => t.fail(err));
+});
+
+test('#remove - must validate parameters', t => {
+  let storage = t.context.storage;
+  let remove = Bluebird.coroutine(storage.remove.bind(storage));
+
+  t.throws(remove(), (val) => {
+    expect(val).to.have.length(2);
+    val.forEach(x => {
+      t.is(x.constructor.name, ACLError.name);
+    });
+    return true;
+  });
+});
+
+test('#remove - must fail for a bad query', t => {
+  let storage = t.context.storage;
+  let remove = Bluebird.coroutine(storage.remove.bind(storage));
+  t.throws(remove(storage.containers.USER, {}), ACLError);
+});
+
+
+test('#remove - must remove the newly added record', t => {
+  let storage = t.context.storage;
+  let remove = Bluebird.coroutine(storage.remove.bind(storage));
+  let add = Bluebird.coroutine(storage.add.bind(storage));
+  let count = Bluebird.coroutine(storage.count.bind(storage));
+
+  return Bluebird.coroutine(function* () {
+    yield storage._ready();
+    let record = yield add(storage.containers.USER, {
+      user: cuid(),
+      roles: [],
+      isBlocked: false,
+      isActive: true
+    });
+    yield remove(storage.containers.USER, { user: record.user });
+    let dbRecord = yield count(storage.containers.USER, { user: record.user });
+    t.is(0, dbRecord);
+  })().catch(err => t.fail(err));
+});
+
+test('#all - must validate parameters', t => {
+  let storage = t.context.storage;
+  let count = Bluebird.coroutine(storage.all.bind(storage));
+
+  t.throws(count(), (val) => {
+    expect(val).to.have.length(2);
+    val.forEach(x => {
+      t.is(x.constructor.name, ACLError.name);
+    });
+    return true;
+  });
+});
+
 
 test.afterEach.always('close active connection', t => {
   t.context.storage.clean();
