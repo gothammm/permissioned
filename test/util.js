@@ -10,9 +10,12 @@ module.exports = {
     let db = yield client.connect(dbUrl);
     let collections = yield db.collections();
     let dropCollection = yield collections.map(col => {
+      if (col.s.name.indexOf('system') > -1) {
+        return null;
+      }
       log.info(`Dropping collection -  ${col.s.name}`);
       return col.drop();
     });
-    return Bluebird.all(dropCollection).then(() => db.close());
+    return Bluebird.all(dropCollection.filter(x => x)).then(() => db.close());
   }
 };
