@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - "4"
+services:
+  - mongodb
+script:
+  - npm run ci-test
+after_success:
+  - './node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/.bin/coveralls'
