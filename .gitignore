@@ -2,4 +2,5 @@
 /.vscode
 coverage
 .nyc_output
+_docpress
 npm-debug.log
