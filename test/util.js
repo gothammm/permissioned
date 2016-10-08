@@ -10,7 +10,7 @@ module.exports = {
     let db = yield client.connect(dbUrl);
     let collections = yield db.collections();
     let dropCollection = yield collections.map(col => {
-      if (['system'].indexOf(col.s.name) > -1) {
+      if (col.s.name.indexOf('system') > -1) {
         return null;
       }
       log.info(`Dropping collection -  ${col.s.name}`);
