@@ -1,0 +1,78 @@
+{
+  "toc": {
+    "sections": [
+      {
+        "title": "Permissioned",
+        "source": "README.md",
+        "url": "index.html",
+        "slug": "index",
+        "headings": [
+          {
+            "title": "Status",
+            "depth": 2,
+            "id": "status"
+          },
+          {
+            "title": "Table of Contents",
+            "depth": 2,
+            "id": "table-of-contents"
+          },
+          {
+            "title": "What is it",
+            "depth": 2,
+            "id": "what-is-it"
+          },
+          {
+            "title": "Usage",
+            "depth": 2,
+            "id": "usage"
+          },
+          {
+            "title": "TODO",
+            "depth": 2,
+            "id": "todo"
+          }
+        ]
+      }
+    ]
+  },
+  "index": {
+    "index.html": {
+      "source": "README.md",
+      "title": "Permissioned",
+      "pageTitle": "Permissioned",
+      "slug": "index",
+      "headings": [
+        {
+          "title": "Status",
+          "depth": 2,
+          "id": "status"
+        },
+        {
+          "title": "Table of Contents",
+          "depth": 2,
+          "id": "table-of-contents"
+        },
+        {
+          "title": "What is it",
+          "depth": 2,
+          "id": "what-is-it"
+        },
+        {
+          "title": "Usage",
+          "depth": 2,
+          "id": "usage"
+        },
+        {
+          "title": "TODO",
+          "depth": 2,
+          "id": "todo"
+        }
+      ]
+    }
+  },
+  "sources": {
+    "README.md": "index.html",
+    "docs/docpress.json": "docpress.json"
+  }
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="assets/style.css?t=d358ee59">
+    <script src="assets/script.js?t=36f3d457"></script>
+    <title>Permissioned</title>
+    <meta name="viewport" content="width=device-width">
+  </head>
+  <body class="-menu-visible">
+    <div class="doc-layout">
+      <div class="toggle menu-toggle js-menu-toggle"></div>
+      <div class="menu toc-menu">
+        <li class="menu-item -level-0 -parent">
+          <ul class="submenu">
+            <li class="menu-item -level-1"><a class="link title -active link-index" href="index.html">Permissioned</a>
+              <ul class="headings heading-list">
+                <li class="heading-item -depth-2"><a class="hlink link-status" href="#status">Status</a>
+                </li>
+                <li class="heading-item -depth-2"><a class="hlink link-table-of-contents" href="#table-of-contents">Table of Contents</a>
+                </li>
+                <li class="heading-item -depth-2"><a class="hlink link-what-is-it" href="#what-is-it">What is it</a>
+                </li>
+                <li class="heading-item -depth-2"><a class="hlink link-usage" href="#usage">Usage</a>
+                </li>
+                <li class="heading-item -depth-2"><a class="hlink link-todo" href="#todo">TODO</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </div>
+      <div class="body page-index">
+        <div class="header-nav">
+          <div class="right"><a class="iconlink" href="https://github.com/peek4y/permissioned" data-title="peek4y/permissioned">
+              <!-- span.title Open in GitHub--><span class="icon -github"></span></a>
+          </div>
+        </div>
+        <div class="markdown-body"><h1 id="permissioned">Permissioned</h1>
+<blockquote>
+<p>Access Control Lists made simple, for node.</p>
+</blockquote>
+<ul>
+<li>Role based authorization for node.js apps.</li>
+<li>Create roles and assign roles to users, assign users to multiple roles.</li>
+<li>Add custom role authorization handlers.</li>
+<li>Completely promise based API,</li>
+</ul>
+<h2 id="status">Status</h2>
+<p><a href="https://travis-ci.org/peek4y/permissioned"><img src="https://travis-ci.org/peek4y/permissioned.svg?branch=master" alt="Build Status"></a>
+<a href="https://coveralls.io/github/peek4y/permissioned?branch=master"><img src="https://coveralls.io/repos/github/peek4y/permissioned/badge.svg?branch=master" alt="Coverage Status"></a></p>
+<h2 id="table-of-contents">Table of Contents</h2>
+<ul>
+<li><a href="#what-is-it">What is it</a></li>
+<li><a href="#usage">Usage</a></li>
+</ul>
+<h2 id="what-is-it">What is it</h2>
+<p>Permissioned is a role based authorization module, that helps in granular authorization of a user, based on roles.
+Create roles, assign users to the roles, decide what kind of resource the roles can access.</p>
+<p>As of now, it uses mongodb as it&apos;s primary storage, future versions will include memory storage, and maybe even a SQL storage.</p>
+<h2 id="usage">Usage</h2>
+<pre><code class="lang-javascript"><span class="pl-k">const</span> ACL = <span class="pl-c1">require</span>(<span class="pl-s">&apos;permissioned&apos;</span>).ACL;
+<span class="pl-k">const</span> MongoStorage = <span class="pl-c1">require</span>(<span class="pl-s">&apos;permissioned&apos;</span>).MongoStorage;
+<span class="pl-k">const</span> Bluebird = <span class="pl-c1">require</span>(<span class="pl-s">&apos;bluebird&apos;</span>);
+
+<span class="pl-k">const</span> acl = <span class="pl-k">new</span> ACL(<span class="pl-k">new</span> ACL.MongoStorage({
+  <span class="hljs-attr">url</span>: <span class="pl-s">&apos;mongodb://localhost/acl&apos;</span>,
+  <span class="hljs-attr">prefix</span>: <span class="pl-s">&apos;acl&apos;</span> <span class="pl-c">// Collection prefx - eg: acl_users / acl_roles etc.</span>
+}));
+
+<span class="pl-k">let</span> user = acl.user(<span class="pl-s">&apos;uniqueUserId&apos;</span>);
+<span class="pl-k">let</span> adminRole = acl.role(<span class="pl-s">&apos;Administrator&apos;</span>);
+
+Bluebird.all([user.add(), adminRole.add()]) <span class="pl-c">// Save admin role &amp; the user</span>
+  .then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> user.assign(<span class="pl-s">&apos;Administrator&apos;</span>)) <span class="pl-c">// Assign the user to &apos;Administrator&apos; role.</span>
+  .then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> adminRole.allow(<span class="pl-s">&apos;MyResourceName&apos;</span>, { <span class="hljs-attr">read</span>: <span class="pl-c1">true</span>, <span class="hljs-attr">update</span>: <span class="pl-c1">true</span> })) <span class="pl-c">// Allow read / update access for the &apos;MyResourceName&apos; resource</span>
+  .then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> acl.hasAccess(<span class="pl-s">&apos;uniqueUserId&apos;</span>, <span class="pl-s">&apos;MyResourceName&apos;</span>, <span class="pl-s">&apos;read&apos;</span>)) <span class="pl-c">// Check if the &apos;uniqueUserId&apos; has read access for the resource name &apos;MyResourceName&apos;</span>
+</code></pre>
+<h2 id="todo">TODO</h2>
+<ul>
+<li>Need more tests.</li>
+<li>Complete API documentation</li>
+</ul>
+
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
