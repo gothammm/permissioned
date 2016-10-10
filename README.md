@@ -47,6 +47,10 @@ Bluebird.all([user.add(), adminRole.add()]) // Save admin role & the user
   .then(() => acl.hasAccess('uniqueUserId', 'MyResourceName', 'read')) // Check if the 'uniqueUserId' has read access for the resource name 'MyResourceName'
 ```
 
+## Note
+
+* It's still a WIP, a lot of tests need to be covered, will soon release a stable v1.0.0
+
 ## TODO
 
 - Need more tests.
