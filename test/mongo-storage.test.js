@@ -64,13 +64,26 @@ test('should get collection name  based on prefix', t => {
   t.is(storage._getCollectionName('mycol'), 'acl_mycol', 'collection name must have a prefix "acl_"');
 });
 
+test('should accept mongo url as constructor value', t => {
+  let storage = new MongoStorage(t.context.dbUrl);
+  t.is(storage.url, t.context.dbUrl);
+});
+
+test('should be able to fetch collection name without prefix.', t => {
+  let storage = new MongoStorage(t.context.dbUrl);
+  delete storage.prefix;
+  t.is(storage._getCollectionName('test'), 'test');
+});
+
 test('should validate db url', t => {
   let storage = t.context.storage;
 
   let valid = storage._isValidUrl('mongodb://test:2723/dbName');
   let invalid = storage._isValidUrl('test');
+  let moreInvalid = storage._isValidUrl();
   t.true(valid);
   t.false(invalid);
+  t.false(moreInvalid);
 });
 
 test.cb('should fail db connection', t => {
@@ -124,6 +137,21 @@ test('#_getUrl must return a valid mongo string', t => {
   });
 
   t.true(storage._isValidUrl(connStr));
+});
+
+test('#_getUrl must return an invalid mongo string', t => {
+  let storage = t.context.storage;
+  let connStr = storage._getUrl();
+
+  t.false(storage._isValidUrl(connStr));
+});
+
+test('#_db shld be able to omit empty db setter value', t => {
+  let storage = t.context.storage;
+  storage._ready().then(() => {
+    storage.db = null;
+    t.truthy(storage.db);
+  });
 });
 
 test('#add - must be a generator function', t => {
@@ -286,6 +314,27 @@ test('#all - must fetch results for a specific field & limit', t => {
     t.is(users.constructor.name, Array.name);
     t.is(users.length, 1);
     t.is(Object.keys(users[0]).length, 2);
+    t.is(users[0].user, uid);;
+    return users;
+  });
+});
+
+test('#all - must fetch results without extra query options', t => {
+  let storage = t.context.storage;
+  let all = Bluebird.coroutine(storage.all.bind(storage));
+  let add = Bluebird.coroutine(storage.add.bind(storage));
+  let uid = cuid();
+  return storage._ready().then(() => add(storage.containers.USER, {
+    user: uid,
+    roles: [],
+    isBlocked: false,
+    isActive: true
+  })).then(() => {
+    return all(storage.containers.USER, { user: uid })
+  }).then(users => {
+    console.log(users);
+    t.is(users.constructor.name, Array.name);
+    t.is(users.length, 1);
     t.is(users[0].user, uid);;
     return users;
   });
