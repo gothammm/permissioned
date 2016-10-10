@@ -269,6 +269,29 @@ test('#all - must validate parameters', t => {
   });
 });
 
+test('#all - must fetch results for a specific field & limit', t => {
+  let storage = t.context.storage;
+  let all = Bluebird.coroutine(storage.all.bind(storage));
+  let add = Bluebird.coroutine(storage.add.bind(storage));
+  let uid = cuid();
+  return storage._ready().then(() => add(storage.containers.USER, {
+    user: uid,
+    roles: [],
+    isBlocked: false,
+    isActive: true
+  })).then(() => {
+    return all(storage.containers.USER, { user: uid }, { limit: 10, select: { user: 1 } })
+  }).then(users => {
+    console.log(users);
+    t.is(users.constructor.name, Array.name);
+    t.is(users.length, 1);
+    t.is(Object.keys(users[0]).length, 2);
+    t.is(users[0].user, uid);;
+    return users;
+  });
+
+});
+
 
 test.afterEach.always('close active connection', t => {
   t.context.storage.clean();
