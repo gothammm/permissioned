@@ -28,6 +28,11 @@
             "id": "usage"
           },
           {
+            "title": "Note",
+            "depth": 2,
+            "id": "note"
+          },
+          {
             "title": "TODO",
             "depth": 2,
             "id": "todo"
@@ -62,6 +67,11 @@
           "title": "Usage",
           "depth": 2,
           "id": "usage"
+        },
+        {
+          "title": "Note",
+          "depth": 2,
+          "id": "note"
         },
         {
           "title": "TODO",

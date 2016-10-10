@@ -23,6 +23,8 @@
                 </li>
                 <li class="heading-item -depth-2"><a class="hlink link-usage" href="#usage">Usage</a>
                 </li>
+                <li class="heading-item -depth-2"><a class="hlink link-note" href="#note">Note</a>
+                </li>
                 <li class="heading-item -depth-2"><a class="hlink link-todo" href="#todo">TODO</a>
                 </li>
               </ul>
@@ -77,6 +79,10 @@ Bluebird.all([user.add(), adminRole.add()]) <span class="pl-c">// Save admin rol
   .then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> adminRole.allow(<span class="pl-s">&apos;MyResourceName&apos;</span>, { <span class="hljs-attr">read</span>: <span class="pl-c1">true</span>, <span class="hljs-attr">update</span>: <span class="pl-c1">true</span> })) <span class="pl-c">// Allow read / update access for the &apos;MyResourceName&apos; resource</span>
   .then(<span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> acl.hasAccess(<span class="pl-s">&apos;uniqueUserId&apos;</span>, <span class="pl-s">&apos;MyResourceName&apos;</span>, <span class="pl-s">&apos;read&apos;</span>)) <span class="pl-c">// Check if the &apos;uniqueUserId&apos; has read access for the resource name &apos;MyResourceName&apos;</span>
 </code></pre>
+<h2 id="note">Note</h2>
+<ul>
+<li>It&apos;s still a WIP, a lot of tests need to be covered, will soon release a stable v1.0.0</li>
+</ul>
 <h2 id="todo">TODO</h2>
 <ul>
 <li>Need more tests.</li>
