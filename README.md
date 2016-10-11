@@ -29,11 +29,10 @@ As of now, it uses mongodb as it's primary storage, future versions will include
 ## Usage
 
 ```javascript
-const ACL = require('permissioned').ACL;
-const MongoStorage = require('permissioned').MongoStorage;
+const ACL = require('permissioned');
 const Bluebird = require('bluebird');
 
-const acl = new ACL(new ACL.MongoStorage({
+const acl = new ACL(ACL.mongoStorage({
   url: 'mongodb://localhost/acl',
   prefix: 'acl' // Collection prefx - eg: acl_users / acl_roles etc.
 }));
