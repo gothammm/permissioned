@@ -16,6 +16,6 @@ module.exports = {
       log.info(`Dropping collection -  ${col.s.name}`);
       return col.drop();
     });
-    return Bluebird.all(dropCollection.filter(x => x)).then(() => db.close());
+    return Bluebird.all(dropCollection.filter(x => x));
   }
 };
