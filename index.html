@@ -62,11 +62,10 @@
 Create roles, assign users to the roles, decide what kind of resource the roles can access.</p>
 <p>As of now, it uses mongodb as it&apos;s primary storage, future versions will include memory storage, and maybe even a SQL storage.</p>
 <h2 id="usage">Usage</h2>
-<pre><code class="lang-javascript"><span class="pl-k">const</span> ACL = <span class="pl-c1">require</span>(<span class="pl-s">&apos;permissioned&apos;</span>).ACL;
-<span class="pl-k">const</span> MongoStorage = <span class="pl-c1">require</span>(<span class="pl-s">&apos;permissioned&apos;</span>).MongoStorage;
+<pre><code class="lang-javascript"><span class="pl-k">const</span> ACL = <span class="pl-c1">require</span>(<span class="pl-s">&apos;permissioned&apos;</span>);
 <span class="pl-k">const</span> Bluebird = <span class="pl-c1">require</span>(<span class="pl-s">&apos;bluebird&apos;</span>);
 
-<span class="pl-k">const</span> acl = <span class="pl-k">new</span> ACL(<span class="pl-k">new</span> ACL.MongoStorage({
+<span class="pl-k">const</span> acl = <span class="pl-k">new</span> ACL(ACL.mongoStorage({
   <span class="hljs-attr">url</span>: <span class="pl-s">&apos;mongodb://localhost/acl&apos;</span>,
   <span class="hljs-attr">prefix</span>: <span class="pl-s">&apos;acl&apos;</span> <span class="pl-c">// Collection prefx - eg: acl_users / acl_roles etc.</span>
 }));
