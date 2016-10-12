@@ -222,7 +222,7 @@ test('#allow - must update an existing access', t => {
 
 
 test.afterEach.always('close active connection', t => {
-  t.context.storage.clean();
+  t.context.storage._ready().then(() => t.context.storage.clean());
 });
 
 test.after.always('cleanup', util.cleanup);

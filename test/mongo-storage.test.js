@@ -343,7 +343,7 @@ test('#all - must fetch results without extra query options', t => {
 
 
 test.afterEach.always('close active connection', t => {
-  t.context.storage.clean();
+  t.context.storage._ready().then(() => t.context.storage.clean());
 });
 
 test.after.always('cleanup', util.cleanup);
