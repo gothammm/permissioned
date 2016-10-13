@@ -38,6 +38,47 @@
             "id": "todo"
           }
         ]
+      },
+      {
+        "title": "API",
+        "sections": [
+          {
+            "title": "Permissioned",
+            "source": "docs/api/permissioned.md",
+            "url": "api/permissioned.html",
+            "slug": "apipermissioned",
+            "headings": [
+              {
+                "title": "Parameters",
+                "depth": 2,
+                "id": "parameters"
+              },
+              {
+                "title": "Methods",
+                "depth": 2,
+                "id": "methods"
+              }
+            ]
+          },
+          {
+            "title": "Role",
+            "source": "docs/api/role.md",
+            "url": "api/role.html",
+            "slug": "apirole",
+            "headings": [
+              {
+                "title": "Parameters",
+                "depth": 2,
+                "id": "parameters"
+              },
+              {
+                "title": "Methods",
+                "depth": 2,
+                "id": "methods"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -79,10 +120,48 @@
           "id": "todo"
         }
       ]
+    },
+    "api/permissioned.html": {
+      "source": "docs/api/permissioned.md",
+      "title": "Permissioned",
+      "pageTitle": "Permissioned",
+      "slug": "apipermissioned",
+      "headings": [
+        {
+          "title": "Parameters",
+          "depth": 2,
+          "id": "parameters"
+        },
+        {
+          "title": "Methods",
+          "depth": 2,
+          "id": "methods"
+        }
+      ]
+    },
+    "api/role.html": {
+      "source": "docs/api/role.md",
+      "title": "Role - Permissioned",
+      "pageTitle": "Role",
+      "slug": "apirole",
+      "headings": [
+        {
+          "title": "Parameters",
+          "depth": 2,
+          "id": "parameters"
+        },
+        {
+          "title": "Methods",
+          "depth": 2,
+          "id": "methods"
+        }
+      ]
     }
   },
   "sources": {
     "README.md": "index.html",
+    "docs/api/permissioned.md": "api/permissioned.html",
+    "docs/api/role.md": "api/role.html",
     "docs/docpress.json": "docpress.json"
   }
 }

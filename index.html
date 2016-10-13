@@ -29,6 +29,14 @@
                 </li>
               </ul>
             </li>
+            <li class="menu-item -level-1 -parent"><span class="title">API</span>
+              <ul class="submenu">
+                <li class="menu-item -level-2"><a class="link title  link-apipermissioned" href="api/permissioned.html">Permissioned</a>
+                </li>
+                <li class="menu-item -level-2"><a class="link title  link-apirole" href="api/role.html">Role</a>
+                </li>
+              </ul>
+            </li>
           </ul>
         </li>
       </div>
@@ -62,10 +70,10 @@
 Create roles, assign users to the roles, decide what kind of resource the roles can access.</p>
 <p>As of now, it uses mongodb as it&apos;s primary storage, future versions will include memory storage, and maybe even a SQL storage.</p>
 <h2 id="usage">Usage</h2>
-<pre><code class="lang-javascript"><span class="pl-k">const</span> ACL = <span class="pl-c1">require</span>(<span class="pl-s">&apos;permissioned&apos;</span>);
+<pre><code class="lang-javascript"><span class="pl-k">const</span> Permissioned = <span class="pl-c1">require</span>(<span class="pl-s">&apos;permissioned&apos;</span>);
 <span class="pl-k">const</span> Bluebird = <span class="pl-c1">require</span>(<span class="pl-s">&apos;bluebird&apos;</span>);
 
-<span class="pl-k">const</span> acl = <span class="pl-k">new</span> ACL(ACL.mongoStorage({
+<span class="pl-k">const</span> acl = <span class="pl-k">new</span> Permissioned(Permissioned.mongoStorage({
   <span class="hljs-attr">url</span>: <span class="pl-s">&apos;mongodb://localhost/acl&apos;</span>,
   <span class="hljs-attr">prefix</span>: <span class="pl-s">&apos;acl&apos;</span> <span class="pl-c">// Collection prefx - eg: acl_users / acl_roles etc.</span>
 }));
@@ -88,6 +96,9 @@ Bluebird.all([user.add(), adminRole.add()]) <span class="pl-c">// Save admin rol
 <li>Complete API documentation</li>
 </ul>
 
+        </div>
+        <div class="footer-nav">
+          <div class="right"><a href="api/permissioned.html"><span class="label">Next: </span><span class="title">Permissioned</span></a></div>
         </div>
       </div>
     </div>
