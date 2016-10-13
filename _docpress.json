@@ -23,6 +23,11 @@
             "id": "what-is-it"
           },
           {
+            "title": "Install",
+            "depth": 2,
+            "id": "install"
+          },
+          {
             "title": "Usage",
             "depth": 2,
             "id": "usage"
@@ -103,6 +108,11 @@
           "title": "What is it",
           "depth": 2,
           "id": "what-is-it"
+        },
+        {
+          "title": "Install",
+          "depth": 2,
+          "id": "install"
         },
         {
           "title": "Usage",
