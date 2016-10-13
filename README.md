@@ -25,6 +25,9 @@ Create roles, assign users to the roles, decide what kind of resource the roles 
 
 As of now, it uses mongodb as it's primary storage, future versions will include memory storage, and maybe even a SQL storage.
 
+## Install
+
+`npm install --save permissioned`
 
 ## Usage
 
