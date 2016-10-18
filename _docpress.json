@@ -82,6 +82,24 @@
                 "id": "methods"
               }
             ]
+          },
+          {
+            "title": "User",
+            "source": "docs/api/user.md",
+            "url": "api/user.html",
+            "slug": "apiuser",
+            "headings": [
+              {
+                "title": "Parameters",
+                "depth": 2,
+                "id": "parameters"
+              },
+              {
+                "title": "Methods",
+                "depth": 2,
+                "id": "methods"
+              }
+            ]
           }
         ]
       }
@@ -166,12 +184,31 @@
           "id": "methods"
         }
       ]
+    },
+    "api/user.html": {
+      "source": "docs/api/user.md",
+      "title": "User - Permissioned",
+      "pageTitle": "User",
+      "slug": "apiuser",
+      "headings": [
+        {
+          "title": "Parameters",
+          "depth": 2,
+          "id": "parameters"
+        },
+        {
+          "title": "Methods",
+          "depth": 2,
+          "id": "methods"
+        }
+      ]
     }
   },
   "sources": {
     "README.md": "index.html",
     "docs/api/permissioned.md": "api/permissioned.html",
     "docs/api/role.md": "api/role.html",
+    "docs/api/user.md": "api/user.html",
     "docs/docpress.json": "docpress.json"
   }
 }
